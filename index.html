@@ -85,7 +85,7 @@ function encode(url){
     return encodeURIComponent(m);
   });
 }
-var TOKEN = null;
+var TOKEN = "token";
 function captchaCallback(token){
   TOKEN = token;
 }
@@ -96,7 +96,6 @@ function captchaExpiredCallback(){
 var action;
 formtron.onsubmit = function(e){
   e.preventDefault();
-  if (!TOKEN) return;
   var url = '/' + action + '?url=' + encode(formtron.url.value);
   if (action == 'screenshot'){
     url += '&width=' + window.innerWidth + '&height=' + window.innerHeight;
