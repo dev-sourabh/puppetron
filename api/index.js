@@ -118,7 +118,6 @@ async function handler(req, res) {
 
     const token = searchParams.get('token');
     if (!token) throw new Error('No token');
-    await verify(CAPTCHA_SECRET, token);
 
     const { hostname, pathname } = new URL(pageURL);
     const path = decodeURIComponent(pathname);
