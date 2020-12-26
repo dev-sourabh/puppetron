@@ -51,7 +51,6 @@ async function handler(req, res) {
   if (req.url == '/') {
     res.writeHead(200, {
       'content-type': 'text/html; charset=utf-8',
-      'cache-control': 'public,max-age=31536000',
     });
     res.end(fs.readFileSync('index.html'));
     return;
@@ -198,7 +197,7 @@ async function handler(req, res) {
       
       await Promise.race([
         responsePromise,
-        page.waitFor(5000),
+        page.waitFor(50000),
       ]);
 
       // Pause all media and stop buffering
@@ -302,7 +301,6 @@ async function handler(req, res) {
 
         res.writeHead(200, {
           'content-type': 'application/pdf',
-          'cache-control': 'public,max-age=31536000',
         });
         res.end(pdf, 'binary');
         break;
@@ -337,7 +335,6 @@ async function handler(req, res) {
 
         res.writeHead(200, {
           'content-type': 'image/jpeg',
-          'cache-control': 'public,max-age=31536000',
         });
 
         if (thumbWidth && thumbWidth < width) {
@@ -357,7 +354,7 @@ async function handler(req, res) {
     actionDone = true;
     console.log('💥 Done action: ' + action);
     if (!cache.has(pageURL)) {
-      cache.set(pageURL, page);
+      //cache.set(pageURL, page);
     }
   } catch (e) {
     if (page) {
