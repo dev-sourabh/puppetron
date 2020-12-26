@@ -228,7 +228,7 @@ async function handler(req, res) {
       
       await Promise.race([
         responsePromise,
-        await page.waitFor(20),
+        page.waitFor(20),
       ]);
 
       // Pause all media and stop buffering
