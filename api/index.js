@@ -172,35 +172,6 @@ async function handler(req, res) {
 
       const nowTime = +new Date();
       let reqCount = 0;
-      await page.setRequestInterception(true);
-      page.on('request', (request) => {
-        const url = request.url();
-        const method = request.method();
-        const resourceType = request.resourceType();
-
-        // Skip data URIs
-        if (/^data:/i.test(url)) {
-          request.continue();
-          return;
-        }
-
-        const seconds = (+new Date() - nowTime) / 1000;
-        const shortURL = truncate(url, 70);
-        const otherResources = /^(manifest|other)$/i.test(resourceType);
-        // Abort requests that exceeds 15 seconds
-        // Also abort if more than 100 requests
-        if (seconds > 15 || reqCount > 100 || actionDone) {
-          console.log(`❌⏳ ${method} ${shortURL}`);
-          request.abort();
-        } else if (blockedRegExp.test(url) || otherResources) {
-          console.log(`❌ ${method} ${shortURL}`);
-          request.abort();
-        } else {
-          console.log(`✅ ${method} ${shortURL}`);
-          request.continue();
-          reqCount++;
-        }
-      });
 
       let responseReject;
       const responsePromise = new Promise((_, reject) => {
