@@ -224,8 +224,9 @@ async function handler(req, res) {
         page.goto(pageURL, {
           waitUntil: 'networkidle2',
         }),
-        page.waitFor(20),
       ]);
+      
+      await page.waitFor(20);
 
       // Pause all media and stop buffering
       page.frames().forEach((frame) => {
