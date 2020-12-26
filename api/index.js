@@ -20,7 +20,7 @@ const LRU = require('lru-cache');
 
 const cache = new LRU({
   max: process.env.CACHE_SIZE || Infinity,
-  maxAge: 1000 * 60, // 1 minute
+  maxAge: 1000 * 6, // 1 minute
   noDisposeOnSet: true,
   dispose: async (url, page) => {
     try {
@@ -33,7 +33,7 @@ const cache = new LRU({
     } catch (e) {}
   },
 });
-setInterval(() => cache.prune(), 1000 * 60); // Prune every minute
+setInterval(() => cache.prune(), 1000 * 6); // Prune every minute
 
 const blocked = require('../blocked.json');
 const blockedRegExp = new RegExp('(' + blocked.join('|') + ')', 'i');
@@ -358,18 +358,6 @@ async function handler(req, res) {
     console.log('💥 Done action: ' + action);
     if (!cache.has(pageURL)) {
       cache.set(pageURL, page);
-
-      // Try to stop all execution
-      page.frames().forEach((frame) => {
-        frame.evaluate(() => {
-          // Clear all timer intervals https://stackoverflow.com/a/6843415/20838
-          for (var i = 1; i < 99999; i++) window.clearInterval(i);
-          // Disable all XHR requests
-          XMLHttpRequest.prototype.send = (_) => _;
-          // Disable all RAFs
-          requestAnimationFrame = (_) => _;
-        });
-      });
     }
   } catch (e) {
     if (page) {
