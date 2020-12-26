@@ -147,7 +147,6 @@ async function handler(req, res) {
     const width = parseInt(searchParams.get('width'), 10) || 1024;
     const height = parseInt(searchParams.get('height'), 10) || 768;
 
-    page = cache.get(pageURL);
     if (!page) {
       if (!browser) {
         console.log('🚀 Launch browser!');
